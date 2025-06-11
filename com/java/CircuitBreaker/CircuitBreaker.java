@@ -29,4 +29,25 @@ public class CircuitBreaker {
         this.lastFailureTime = new AtomicReference<>();
     }
 
+    private void onSuccess(){
+        failCount.set(0);
+        state.set(State.CLOSE);
+    }
+
+    private void onFailure(){
+        failCount.incrementAndGet();
+        lastFailureTime.set(LocalDateTime.now());
+
+        if(failCount.get() >= failureThreshold){
+            state.set(State.OPEN);
+        }
+    }
+
+    public State getState(){
+        return state.get();
+    }
+
+    public int getFailureCount(){
+        return failCount.get();
+    }
 }
