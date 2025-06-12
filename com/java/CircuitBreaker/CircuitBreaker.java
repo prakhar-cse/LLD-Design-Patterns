@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 public class CircuitBreaker {
 
@@ -49,5 +50,24 @@ public class CircuitBreaker {
 
     public int getFailureCount(){
         return failCount.get();
+    }
+
+    public <T> T execute(Supplier<T> operation) throws Exception{
+        if(state.get() == State.OPEN){
+            if(shouldAttemptReset()){
+                state.set(State.HALF_OPEN);
+            }else{
+                throw new CircuitBreakerOpenException("Circuit is open");
+            }
+        }
+
+        try {
+            T result = operation.get();
+            onSuccess();
+            return result;
+        }catch (Exception e){
+            onFailure();
+            throw e;
+        }
     }
 }
