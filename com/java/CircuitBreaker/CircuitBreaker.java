@@ -2,6 +2,7 @@ package com.java.CircuitBreaker;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -68,6 +69,17 @@ public class CircuitBreaker {
         }catch (Exception e){
             onFailure();
             throw e;
+        }
+    }
+
+    private boolean shouldAttemptReset() {
+        return lastFailureTime.get() != null &&
+                ChronoUnit.MILLIS.between(lastFailureTime.get(), LocalDateTime.now()) >= timeoutInMillis;
+    }
+
+    public static class CircuitBreakerOpenException extends RuntimeException{
+        public CircuitBreakerOpenException(String msg){
+            super(msg);
         }
     }
 }
