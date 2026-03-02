@@ -6,7 +6,7 @@ abstract class ModelTrainer{
   public eval_model();
   public save_model();
 
-  public trainerTemplate(){
+  public final trainerTemplate(){
 
         load_data();
         preprocess_data();
