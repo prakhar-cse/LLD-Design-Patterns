@@ -1,9 +1,6 @@
 
 class LLMTrainer extends ModelTrainer{
 
-        public void load_data(){
-            System.out.println("---Loading Data for LLM---");
-        }
         public void preprocess_data(){
              System.out.println("---Preprocess Data for LLM---");
         }

@@ -1,19 +1,22 @@
-abstract class ModelTrainer{
+abstract class ModelTrainer {
 
-  public load_data();
-  public preprocess_data();
-  public train_model();
-  public eval_model();
-  public save_model();
 
-  public final trainerTemplate(){
+	public void load_data() {
+		System.out.println("---Loading Data General---");
+	}
+	abstract void preprocess_data();
+	abstract void train_model();
+	abstract void eval_model();
+	abstract void save_model();
 
-        load_data();
-        preprocess_data();
-        train_model();
-        eval_model();
-        save_model();
-  }
-  
+	public final void trainerTemplate() {
+
+		load_data();
+		preprocess_data();
+		train_model();
+		eval_model();
+		save_model();
+	}
+
 
 }
